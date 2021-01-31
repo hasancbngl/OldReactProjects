@@ -1,9 +1,20 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styled from 'styled-components';
 import './Cockpit.css';
 
 const Cockpit = (props) => {
-    const StyledButton = styled.button`
+  console.log('cockpit.js UseEffect');
+    useEffect(()=>{
+      setTimeout(() => {
+        alert('Cockpit.js => useEffect');
+       }, 1000); 
+       return () => {
+         console.log('Cleanup work in UseEddect(Cockpit.js)');
+       };
+    }, []);
+     //[] makes it run only first time. [props.person] it run first time and every time person related data changed.
+  
+     const StyledButton = styled.button`
   background-color: ${props.showPersonsStyle ? 'red' : 'blue'};
   color: white;
   font: inherit;
@@ -18,16 +29,16 @@ const Cockpit = (props) => {
   `;
 
     const cssClasses = [];
-    if(props.persons.length <=2) {
+    if(props.personsLength <=2) {
       cssClasses.push('red'); //classes = ['red'];
     }
        
-    if(props.persons.length <=1) {
+    if(props.personsLength <=1) {
       cssClasses.push('bold'); //classes = ['red', bold];
     }
     return(
        <div className="Cockpit">
-         <h1>Yo I started!</h1>
+         <h1>{props.title}</h1>
          <p className = {cssClasses.join(' ')}>Wanna get better ? Read,Read,read and Code, code, code!</p>
          <br/>
          <StyledButton showPersonsStyle = {props.showPersonsStyle}
@@ -37,4 +48,4 @@ const Cockpit = (props) => {
     );
 };
 
-export default Cockpit;
+export default React.memo(Cockpit);
