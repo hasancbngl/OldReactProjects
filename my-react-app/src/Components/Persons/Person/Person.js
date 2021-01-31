@@ -13,7 +13,6 @@ const StyledDiv = styled.div`
 `;
 const person = (props) => {
     return (
-        // <div className="Person" style={myStyle}>
         <StyledDiv>
         <p 
         onClick = {props.click}>

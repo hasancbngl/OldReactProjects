@@ -1,25 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
-import Person from './Person/Person';
-import styled from 'styled-components';
-
-/* styled-components
-const StyledButton = styled.button`
-  background-color: ${props => props.showPersonsStyle ? 'red' : 'blue'};
-  color: white;
-  font: inherit;
-  border: 2px solid black;
-  padding: 8px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: ${props => props.showPersonsStyle ? 'salmon' :'green'}; 
-    color: black
-  }
-  `;
-
-  */
- 
+import Persons from '../Components/Persons/Persons';
+import Cockpit from '../Components/Cockpit/Cockpit';
 
 class App extends Component {
   state = {
@@ -77,39 +59,22 @@ class App extends Component {
   render() {
     let persons = null;
     if(this.state.showPersons) {
-      persons = (
-      <div>
-        {this.state.persons.map((person, index) => {
-          return <Person
-          click = {this.deletePersonHandler.bind(this, index)}
-          name = {person.name} 
-          age = {person.age}
-          key = {person.id}
-          changed = {(event) => this.inputChangedHandler(event, person.id)}
-          changedAge = {(event) => this.ageInputChangedHandler(event,person.id)}/>
-        })}
-       </div>
-      );
-    }
-
-    const cssClasses = [];
-    if(this.state.persons.length <=2) {
-      cssClasses.push('red'); //classes = ['red'];
-    }
-       
-    if(this.state.persons.length <=1) {
-      cssClasses.push('bold'); //classes = ['red', bold];
+      persons = <Persons 
+      persons = {this.state.persons}
+      delete = {this.deletePersonHandler}
+      changed = {this.inputChangedHandler}
+      changedAge = {this.ageInputChangedHandler}
+      />
     }
 
   return (
-   <div className="App">
-       <h1>Yo I started!</h1>
-       <p className = {cssClasses.join(' ')}>Wanna get better ? Read,Read,read and Code, code, code!</p>
-       <br/>
-       <StyledButton showPersonsStyle = {this.state.showPersons}
-       onClick={this.togglePersonHandler}>Change Name</StyledButton>
-       <br/>
-       {persons} 
+   <div>
+       <Cockpit
+       persons = {this.state.persons}
+       toggle = {this.togglePersonHandler}
+       showPersonsStyle = {this.state.showPersons}
+       />
+     {persons} 
     </div> 
   );
   }
