@@ -31,6 +31,7 @@ class Persons extends PureComponent {
 
   render() {
      console.log('[Persons.js] rendering.');
+    
     return this.props.persons.map((person, index) => {
           return ( <Person
           click = {this.props.delete.bind(this, index)}
@@ -38,7 +39,8 @@ class Persons extends PureComponent {
           age = {person.age}
           key = {person.id}
           changed = {(event) => this.props.changed(event, person.id)}
-          changedAge = {(event) => this.props.changedAge(event,person.id)}/>
+          changedAge = {(event) => this.props.changedAge(event,person.id)}
+          />
           );
         });
     };

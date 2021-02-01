@@ -1,13 +1,18 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import styled from 'styled-components';
 import './Cockpit.css';
+import WithClass from '../../hoc/WithClass';
+import AuthContext from '../../context/auth-context';
+
 
 const Cockpit = (props) => {
+  const toggleButtonRef = useRef(null);
+ 
+
   console.log('cockpit.js UseEffect');
     useEffect(()=>{
-      setTimeout(() => {
-        alert('Cockpit.js => useEffect');
-       }, 1000); 
+      toggleButtonRef.current.click();
+
        return () => {
          console.log('Cleanup work in UseEddect(Cockpit.js)');
        };
@@ -37,14 +42,16 @@ const Cockpit = (props) => {
       cssClasses.push('bold'); //classes = ['red', bold];
     }
     return(
-       <div className="Cockpit">
+       <WithClass classes="Cockpit">
          <h1>{props.title}</h1>
          <p className = {cssClasses.join(' ')}>Wanna get better ? Read,Read,read and Code, code, code!</p>
          <br/>
-         <StyledButton showPersonsStyle = {props.showPersonsStyle}
-         onClick={props.toggle}>Change Name</StyledButton>
-         <br/>
-       </div>
+         <StyledButton ref={toggleButtonRef} showPersonsStyle = {props.showPersonsStyle}
+         onClick={props.toggle}>Show Persons</StyledButton>
+         <AuthContext.Consumer>
+         {(context) => <button onClick={context.login}>Log in</button> }
+         </AuthContext.Consumer>
+       </WithClass>
     );
 };
 

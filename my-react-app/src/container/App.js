@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './App.css';
 import Persons from '../Components/Persons/Persons';
 import Cockpit from '../Components/Cockpit/Cockpit';
+import WithClass from '../hoc/WithClass';
+import AuthContext from '../context/auth-context';
 
 class App extends Component {
   constructor(props) {
@@ -15,7 +17,10 @@ class App extends Component {
       {id:'asd', name: "jack", age: 35},
       {id:'aqw', name: "hun", age: 88}
     ],
-    otherState: 'some value'
+    otherState: 'some value',
+    showPersons: false,
+    changeCounter: 0,
+    authenticated: false
   }
 
  static getDerivedStateFromProps(props, state) {
@@ -50,8 +55,13 @@ class App extends Component {
     const persons = [...this.state.persons];
     persons[personIndex] = person;
 
-    this.setState({persons: persons});
-  }
+    this.setState((prevState, props) => {
+      return {
+        persons: persons,
+        changeCounter : prevState.changeCounter +1
+      };
+    });
+  };
 
   ageInputChangedHandler = (event, id) => {
     const personIndex = this.state.persons.findIndex(p => {
@@ -66,19 +76,22 @@ class App extends Component {
     persons[personIndex] = person;
 
     this.setState({persons: persons});
-  }
+  };
 
   deletePersonHandler = (personIndex) => {
     const persons = [...this.state.persons];
     //remove one element
     persons.splice(personIndex,1);
     this.setState({persons: persons});
-  } 
+  };
 
   togglePersonHandler = () => {
     const isShowing = this.state.showPersons;
     this.setState({showPersons: !isShowing});
-  }
+  };
+  loginHandler = () => {
+    this.setState({authenticated: true});
+  };
 
   render() {
      console.log('[App.js] render.');
@@ -89,11 +102,17 @@ class App extends Component {
       delete = {this.deletePersonHandler}
       changed = {this.inputChangedHandler}
       changedAge = {this.ageInputChangedHandler}
+      isAuthenticated = {this.state.authenticated}
       />
     }
 
   return (
-   <div>
+   <WithClass>
+     <AuthContext.Provider 
+     value = {{
+       authenticated: this.state.authenticated, 
+       login: this.loginHandler
+     }}>
        <Cockpit
        title = {this.props.appTitle}
        personsLength = {this.state.persons.length}
@@ -101,7 +120,8 @@ class App extends Component {
        showPersonsStyle = {this.state.showPersons}
        />
      {persons} 
-    </div> 
+     </AuthContext.Provider>
+    </WithClass> 
   );
   }
 }
