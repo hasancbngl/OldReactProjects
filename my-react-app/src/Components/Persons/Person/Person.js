@@ -22,16 +22,17 @@ class Person extends Component {
 
     componentDidMount() {
         this.inputElementRef.current.focus();
+        console.log("authenticated: " ,this.context.authenticated);
     }
+
+    static contextType = AuthContext;
 
     render() {
     console.log('[Person.js] rendering.');
     return (
         //Aux returns childrens and can use elements next to each other also Built in React.Freagment can be used!
       <StyledDiv>
-          <AuthContext.Consumer>
-              {(context) => context.authenticated ? <p>Authenticated!</p> : <p>Please Login</p>}
-          </AuthContext.Consumer>
+         {this.context.authenticated ? <p>Authenticated!</p> : <p>Please Login</p>}
         <p 
         onClick = {this.props.click}>
             I'm {this.props.name} and {this.props.age} years old!
