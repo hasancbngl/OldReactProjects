@@ -1,4 +1,6 @@
 .Content {
-    margin-top: 75px;
+    margin-top: 70px;
     margin-left: 10px;
+    box-sizing: border-box;
+    height: 100%;
 }
